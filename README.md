@@ -26,7 +26,8 @@ Extracting quantitative readability and structural features to capture the under
 # Extracting unique word ratios and readability scores
 reviews["unique_word_ratio"] = reviews["text"].apply(lambda x: len(set(x.split())) / len(x.split()) if len(x.split()) > 0 else 0)
 reviews["flesch_reading_ease"] = reviews["text"].apply(lambda x: textstat.flesch_reading_ease(x) if len(x) > 0 else 0)
-
+### 2. Robust Preprocessing Pipeline
+Utilizing ColumnTransformer to seamlessly apply TF-IDF vectorization to text data and Yeo-Johnson power transformations to numeric features within a unified pipeline[cite: 1]:
 preprocessor = ColumnTransformer(
     transformers=[
         ("tfidf", TfidfVectorizer(
