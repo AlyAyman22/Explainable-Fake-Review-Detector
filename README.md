@@ -1,6 +1,6 @@
 # 🛡️ Explainable Fake Review Detector
 
-**🌐 Live Demo:** https://x-frs.netlify.app/
+**🌐 Website:** https://x-frs.netlify.app/
 
 ---
 
