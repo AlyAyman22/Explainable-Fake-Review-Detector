@@ -1,81 +1,217 @@
-# Explainable-Fake-Review-Detector
-**Live Demo:** [Visit the Web Application](https://x-frs.netlify.app/)
+# 🛡️ Explainable Fake Review Detector
 
-## 📌 Project Overview
-An Explainable AI (XAI) system developed by a multidisciplinary team to combat the growing challenge of fake online reviews on e-commerce platforms. This project leverages both traditional Machine Learning pipelines and advanced Deep Learning models to provide highly accurate and transparent predictions, empowering users to make informed decisions and improving trust in online marketplaces.
+**🌐 Live Demo:** https://x-frs.netlify.app/
 
-## ✨ Key Features
-* **Dual-Module Detection Architecture:**
-  * **Machine Learning Module:** Utilizes an optimized Stacking Ensemble (combining SVM, Logistic Regression, and XGBoost) for efficient, robust, and accessible predictions.
-  * **Deep Learning Module:** Integrates **DistilBERT** to achieve superior prediction accuracy for advanced/premium users.
-* **Explainable AI (XAI):** Implemented explainability features to provide users with clear, interpretable insights into *why* a specific review was classified as fake or genuine, ensuring high model transparency.
-* **End-to-End Data Pipeline:** Built a highly efficient Python-based pipeline handling data cleaning, text normalization, and advanced feature engineering for seamless model training and inference.
+---
 
-## 🛠️ Technologies & Tools
-* **Machine Learning & NLP:** Scikit-Learn, XGBoost, SVM, NLTK
-* **Deep Learning:** DistilBERT (Hugging Face)
-* **Data Processing:** Pandas, NumPy, Textstat
-* **Frontend & UI:** React, TypeScript, Tailwind CSS
-* **Deployment:** Netlify (Frontend)
+# 📖 Project Overview
 
-## 💻 Code Highlights
+Explainable Fake Review Detector is an Explainable AI (XAI) system developed by a multidisciplinary team to combat the growing challenge of fake online reviews on e-commerce platforms such as Amazon.
 
-### 1. Advanced Linguistic Feature Engineering
-Extracting quantitative readability and structural features to capture the underlying style of the text, an essential step in distinguishing human-written from AI-generated reviews:
+The project combines **traditional Machine Learning** and **Deep Learning** techniques to provide highly accurate and transparent predictions, enabling users to understand why a review is classified as **Fake** or **Genuine** while improving trust in online marketplaces.
+
+---
+
+# 🚀 Key Features
+
+## Dual-Module Detection Architecture
+
+### 🔹 Machine Learning Module
+
+- Optimized **Stacking Ensemble**
+- Support Vector Machine (SVM)
+- Logistic Regression
+- XGBoost
+- Fast and efficient predictions
+
+### 🔹 Deep Learning Module
+
+- DistilBERT (Hugging Face)
+- Higher prediction accuracy
+- Premium prediction service
+
+## Explainable AI (XAI)
+
+Provides human-readable explanations for every prediction, allowing users to understand why a review has been classified as fake or genuine.
+
+## End-to-End Data Pipeline
+
+- Data Cleaning
+- Text Normalization
+- Feature Engineering
+- Model Training
+- Prediction Pipeline
+
+---
+
+# 🛠 Technologies & Tools
+
+## Machine Learning & NLP
+
+- Scikit-learn
+- XGBoost
+- Support Vector Machine (SVM)
+- NLTK
+
+## Deep Learning
+
+- DistilBERT
+- Hugging Face Transformers
+
+## Data Processing
+
+- Pandas
+- NumPy
+- Textstat
+
+## Frontend
+
+- React
+- TypeScript
+- Tailwind CSS
+
+## Deployment
+
+- Netlify
+
+---
+
+# 💻 Code Highlights
+
+## 1️⃣ Advanced Linguistic Feature Engineering
+
+Extracting readability and linguistic features to improve fake review detection.
+
 ```python
-# Extracting unique word ratios and readability scores
-reviews["unique_word_ratio"] = reviews["text"].apply(lambda x: len(set(x.split())) / len(x.split()) if len(x.split()) > 0 else 0)
-reviews["flesch_reading_ease"] = reviews["text"].apply(lambda x: textstat.flesch_reading_ease(x) if len(x) > 0 else 0)
-### 2. Robust Preprocessing Pipeline
-Utilizing ColumnTransformer to seamlessly apply TF-IDF vectorization to text data and Yeo-Johnson power transformations to numeric features within a unified pipeline[cite: 1]:
+reviews["unique_word_ratio"] = reviews["text"].apply(
+    lambda x: len(set(x.split())) / len(x.split()) if len(x.split()) > 0 else 0
+)
+
+reviews["flesch_reading_ease"] = reviews["text"].apply(
+    lambda x: textstat.flesch_reading_ease(x) if len(x) > 0 else 0
+)
+```
+
+---
+
+## 2️⃣ Robust Preprocessing Pipeline
+
+Applying TF-IDF vectorization and numeric feature transformations using a unified preprocessing pipeline.
+
+```python
 preprocessor = ColumnTransformer(
     transformers=[
-        ("tfidf", TfidfVectorizer(
-            ngram_range=(1, 2),      
-            max_df=0.4,              
-            min_df=100,             
-            max_features=2000,       
-            sublinear_tf=True), text_col),
+        (
+            "tfidf",
+            TfidfVectorizer(
+                ngram_range=(1,2),
+                max_df=0.4,
+                min_df=100,
+                max_features=2000,
+                sublinear_tf=True
+            ),
+            text_col
+        ),
         ("num", PowerTransformer(), numeric_cols)
     ]
 )
-# Defining base estimators for the ensemble
+```
+
+---
+
+## 3️⃣ Stacking Ensemble Pipeline
+
+Building an optimized Stacking Ensemble for fake review detection.
+
+```python
 base_estimators = [
     ('svm', LinearSVC(max_iter=2000)),
-    ('xgb', XGBClassifier(n_estimators=150, learning_rate=0.1))
+    ('xgb', XGBClassifier(
+        n_estimators=150,
+        learning_rate=0.1
+    ))
 ]
 
-# Building the Stacking Classifier with a Logistic Regression meta-model
 stacking_model = StackingClassifier(
     estimators=base_estimators,
     final_estimator=LogisticRegression(),
     cv=5
 )
 
-# Creating the final end-to-end pipeline
-full_pipeline = Pipeline(steps=[
-    ('preprocessor', preprocessor),
-    ('classifier', stacking_model)
+full_pipeline = Pipeline([
+    ("preprocessor", preprocessor),
+    ("classifier", stacking_model)
 ])
 
-# Training the entire pipeline
 full_pipeline.fit(X_train, y_train)
+```
 
+---
 
+# ⚙️ How to Run Locally
+
+## 1. Backend
+
+```bash
 cd backend
-# Create and activate a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
 
-# Install the required Python packages
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Linux / macOS
+source venv/bin/activate
+
 pip install -r requirements.txt
 
-# Run the backend server
 python main.py
+```
 
+---
+
+## 2. Frontend
+
+```bash
 cd UI
-# Install Node modules
+
 npm install
 
-# Start the React application
 npm run dev
+```
+
+---
+
+# 👨‍💻 My Contribution
+
+As the Machine Learning Engineer in the project, I was responsible for:
+
+- Designing and implementing the complete Machine Learning pipeline.
+- Performing data preprocessing and text normalization.
+- Engineering linguistic and statistical features.
+- Developing and evaluating multiple classifiers:
+  - Support Vector Machine (SVM)
+  - Logistic Regression
+  - XGBoost
+- Building the final **Stacking Ensemble** model.
+- Selecting the optimal model based on comprehensive performance evaluation.
+
+---
+
+# 📌 Future Improvements
+
+- Deploy backend using cloud services.
+- Add multilingual fake review detection.
+- Fine-tune larger transformer models.
+- Expand explainability with advanced XAI techniques.
+
+---
+
+# 👥 Team
+
+Developed by a multidisciplinary graduation project team.
+
+Machine Learning Module:
+**Aly Ayman**
+
+---
