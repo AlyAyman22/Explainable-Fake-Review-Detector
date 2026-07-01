@@ -1,0 +1,167 @@
+/* =========================
+   src/global.css
+   ========================= */
+@import "tailwindcss";
+
+@theme {
+  --color-background: #F7F7FF;
+
+  --accent-indigo: #6366F1;
+  --accent-violet: #A78BFA;
+  --accent-cyan: #22D3EE;
+
+  --ui-text: #343434;
+  --ui-text-soft: rgba(52, 52, 52, 0.78);
+  --ui-muted: rgba(52, 52, 52, 0.50);
+
+  --ui-border: rgba(52, 52, 52, 0.12);
+
+  --glow-strong: rgba(167, 139, 250, 0.95);
+  --glow-soft: rgba(99, 102, 241, 0.65);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  background: var(--color-background);
+  color: var(--ui-text);
+  line-height: 1.5;
+}
+
+/* =========================
+   VIDEO BACKGROUND
+   ========================= */
+.video-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  background: #F7F7FF;
+}
+
+.video-bg__vid {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-bg__grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.10;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* =========================
+   UI
+   ========================= */
+.logo-glow {
+  color: var(--ui-text);
+  text-shadow:
+    0 0 22px rgba(167, 139, 250, 0.28),
+    0 0 42px rgba(99, 102, 241, 0.18);
+}
+
+.nav-link {
+  color: var(--ui-text);
+  transition: transform 0.25s ease, text-shadow 0.25s ease, letter-spacing 0.25s ease;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.nav-link:hover {
+  text-shadow:
+    0 0 22px var(--glow-strong),
+    0 0 44px var(--glow-soft);
+  letter-spacing: 0.6px;
+}
+
+.input-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--ui-border);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+.send-btn,
+.check-another-btn-hover,
+.mode-trigger {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+  cursor: pointer;
+}
+
+.send-btn:hover:not(:disabled),
+.check-another-btn-hover:hover,
+.mode-trigger:hover {
+  transform: scale(1.04);
+  box-shadow:
+    0 0 22px var(--glow-strong),
+    0 0 52px var(--glow-soft);
+}
+
+.send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.icon-glow-hover {
+  transition: filter 0.25s ease, transform 0.25s ease;
+}
+.icon-glow-hover:hover {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 12px var(--glow-strong)) drop-shadow(0 0 26px var(--glow-soft));
+}
+
+.mode-panel {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid var(--ui-border);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(10px);
+}
+
+/* Loading dots */
+@keyframes loadingDots {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(1); }
+  40%          { opacity: 1;    transform: scale(1.25); }
+}
+.dot-1 { animation: loadingDots 1.2s infinite ease-in-out; animation-delay: 0s; }
+.dot-2 { animation: loadingDots 1.2s infinite ease-in-out; animation-delay: 0.3s; }
+.dot-3 { animation: loadingDots 1.2s infinite ease-in-out; animation-delay: 0.6s; }
+
+/* Footer */
+.footer-link {
+  transition: text-shadow 0.25s ease, color 0.25s ease;
+  color: rgba(52, 52, 52, 0.62);
+}
+.footer-link:hover {
+  text-decoration: underline;
+  text-shadow: 0 0 14px rgba(167, 139, 250, 0.35);
+}
+
+/* Verdict glows */
+.glow-authentic {
+  color: #16a34a;
+  text-shadow: 0 0 18px rgba(22, 163, 74, 0.22), 0 0 34px rgba(22, 163, 74, 0.12);
+}
+.glow-fake {
+  color: #dc2626;
+  text-shadow: 0 0 18px rgba(220, 38, 38, 0.22), 0 0 34px rgba(220, 38, 38, 0.12);
+}
+
+/* Scrollbars */
+textarea::-webkit-scrollbar { width: 8px; }
+textarea::-webkit-scrollbar-track { background: rgba(52, 52, 52, 0.06); border-radius: 10px; }
+textarea::-webkit-scrollbar-thumb { background: rgba(52, 52, 52, 0.65); border-radius: 10px; }
+textarea::-webkit-scrollbar-thumb:hover { background: rgba(52, 52, 52, 0.78); }
+textarea { scrollbar-width: thin; scrollbar-color: rgba(52,52,52,0.65) rgba(52,52,52,0.06); }
